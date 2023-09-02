@@ -2,11 +2,11 @@
 
 BuyBusy is a web application for the customers of an e-commerce business
 
-##Goal
+## Goal
 
 Develop an E-Commerce that enables individuals to browse available items, add or remove them from their shopping cart, and complete the purchasing process.
 
-##Technology used
+## Technology used
 
 - **Firebase Firestore:** Our database of choice, Firebase Firestore, offers real-time data storage and synchronization, enabling dynamic updates and data consistency.
 
@@ -24,7 +24,7 @@ Develop an E-Commerce that enables individuals to browse available items, add or
 
 - **Custom Hooks:** Throughout the application, custom hooks have been developed to encapsulate and reuse functionality, promoting clean and maintainable code.
 
-##Approach - Solution
+## Approach - Solution
 
 Database Schema Design:
 
