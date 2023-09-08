@@ -1,21 +1,29 @@
-import {useAuth} from "../context/authContext";
-import {useCart} from "../context/cartContext";
+import {useDispatch, useSelector} from "react-redux";
+import {authSelector} from "../redux/reducers/authReducer";
 import {Add, Minus} from "./icons";
 import {useNavigate} from "react-router-dom";
+import {
+  addNewCartItem,
+  cartSelector,
+  removeCartItem,
+  updateCartItem,
+} from "../redux/reducers/cartReducer";
 
 export default function Card({page = "default", product}) {
-  const {addItem, removeItem, updateQuantity} = useCart();
-  const user = useAuth();
   const navigate = useNavigate();
+  const {user} = useSelector(authSelector);
+  const {cart} = useSelector(cartSelector);
+  const dispatch = useDispatch();
 
   // allow user to add to cart when he is signed in
   const handleAdd = () => {
     if (!user) {
       navigate("/login");
     } else {
-      addItem(product.id);
+      dispatch(addNewCartItem({id: product.id, user, cart}));
     }
   };
+
   return (
     <div className="flex flex-col justify-between">
       <div>
@@ -27,7 +35,11 @@ export default function Card({page = "default", product}) {
         {page === "cart" && (
           <div className="flex">
             <span
-              onClick={() => updateQuantity(1, product.id)}
+              onClick={() =>
+                dispatch(
+                  updateCartItem({change: 1, id: product.id, user, cart})
+                )
+              }
               className="cursor-pointer hover:text-slate-600 duration-300"
             >
               <Add />
@@ -35,7 +47,11 @@ export default function Card({page = "default", product}) {
             <span className="mx-2">{product?.quantity}</span>
 
             <span
-              onClick={() => updateQuantity(-1, product.id)}
+              onClick={() =>
+                dispatch(
+                  updateCartItem({change: -1, id: product.id, user, cart})
+                )
+              }
               className="cursor-pointer hover:text-slate-400 duration-300"
             >
               <Minus />
@@ -44,7 +60,11 @@ export default function Card({page = "default", product}) {
         )}
       </div>
       <button
-        onClick={() => (page === "cart" ? removeItem(product.id) : handleAdd())}
+        onClick={() =>
+          page === "cart"
+            ? dispatch(removeCartItem({id: product.id, user, cart}))
+            : handleAdd()
+        }
         className={`border ${
           page === "cart"
             ? "bg-rose-500 hover:text-rose-500"

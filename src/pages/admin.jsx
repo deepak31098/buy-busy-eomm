@@ -1,12 +1,16 @@
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
-import {useMutation} from "react-query";
 import {toast} from "react-toastify";
-import {addNewProduct} from "../services/products";
 import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
-import {useAuth} from "../context/authContext";
+import {useDispatch, useSelector} from "react-redux";
+import {authSelector} from "../redux/reducers/authReducer";
+import {
+  addProduct,
+  productActions,
+  productSelector,
+} from "../redux/reducers/productReducer";
 
 const schema = z.object({
   image: z.string().nonempty("URL is required"),
@@ -19,7 +23,10 @@ const schema = z.object({
 
 export default function Admin() {
   const navigate = useNavigate();
-  const user = useAuth();
+  const {message} = useSelector(productSelector);
+  const dispatch = useDispatch();
+  const {user} = useSelector(authSelector);
+
   const {
     register,
     handleSubmit,
@@ -29,17 +36,13 @@ export default function Admin() {
     resolver: zodResolver(schema),
   });
 
-  const mutateAddProduct = useMutation({
-    mutationKey: ["add_product"],
-    mutationFn: addNewProduct,
-    onSuccess: docRef => {
-      reset();
-      toast("New Product added to list");
-    },
-    onError: e => {
-      console.log(e);
-    },
-  });
+  // show notification
+  useEffect(() => {
+    if (message) {
+      toast(message);
+      dispatch(productActions.setMessage(null));
+    }
+  }, [message]);
 
   useEffect(() => {
     if (!user) navigate("/");
@@ -48,7 +51,10 @@ export default function Admin() {
   return (
     <div className="flex justify-center mt-[-5px] flex-col items-center">
       <form
-        onSubmit={handleSubmit(formData => mutateAddProduct.mutate(formData))}
+        onSubmit={handleSubmit(formData => {
+          dispatch(addProduct(formData));
+          reset();
+        })}
         className="xl:w-2/5 sm:w-3/5 w-full shadow-xl p-8 sm:p-12 mx-4 md:p-16"
       >
         <div className="text-center text-4xl md:text-5xl ">ADD PRODUCTS</div>

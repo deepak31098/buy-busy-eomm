@@ -1,30 +1,54 @@
 import {NavLink, Outlet, useNavigate} from "react-router-dom";
-import {signOutUser} from "../services/user";
-import {useMutation} from "react-query";
 import {toast} from "react-toastify";
-import {useAuth} from "../context/authContext";
-import {useCart} from "../context/cartContext";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {
+  authActions,
+  authSelector,
+  getAuthState,
+  logoutUser,
+} from "../redux/reducers/authReducer";
+import {
+  cartActions,
+  cartSelector,
+  getInitialCartItems,
+} from "../redux/reducers/cartReducer";
 
 export default function NavBar() {
-  const user = useAuth();
-  const {cart} = useCart();
+  const dispatch = useDispatch();
+  const {user, message} = useSelector(authSelector);
+  const cartState = useSelector(cartSelector);
   const navigate = useNavigate();
-  // logout
-  const mutateLogout = useMutation({
-    mutationKey: ["sign_out"],
-    mutationFn: signOutUser,
-    onSuccess: () => {
-      toast("Logged out successfully");
-      navigate("/login");
-    },
-    onError: e => console.log(e),
-  });
 
   // logo click
   const handleLogo = () => {
     navigate("/");
     window.location.reload();
   };
+
+  // initial auth state
+  useEffect(() => {
+    dispatch(getAuthState());
+  }, []);
+
+  // show notification
+  useEffect(() => {
+    if (message) {
+      toast(message);
+      dispatch(authActions.setMessage(null));
+    }
+    if (cartState.message) {
+      toast(cartState.message);
+      dispatch(cartActions.setMessage(null));
+    }
+  }, [message, cartState.message]);
+
+  // get all cart item in user's card
+  useEffect(() => {
+    if (!user) return;
+    dispatch(cartActions.setLoading(true));
+    dispatch(getInitialCartItems(user));
+  }, [user]);
 
   return (
     <>
@@ -68,15 +92,15 @@ export default function NavBar() {
                 }
               >
                 Cart
-                {cart?.length ? (
+                {cartState?.cart?.length ? (
                   <div className="absolute top-[-8px] right-[-10px] bg-black text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                    {cart?.length}
+                    {cartState?.cart?.length}
                   </div>
                 ) : null}
               </NavLink>
 
               <div
-                onClick={() => mutateLogout.mutate()}
+                onClick={() => dispatch(logoutUser())}
                 className="hover:text-slate-600 font-medium cursor-pointer me-4"
               >
                 Logout

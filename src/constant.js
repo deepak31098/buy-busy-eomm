@@ -16,3 +16,5 @@ export const category = [
     name: "Electronics",
   },
 ];
+
+export const MAX_PRICE = 8000;

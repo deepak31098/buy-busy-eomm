@@ -20,53 +20,51 @@ Develop an E-Commerce that enables individuals to browse available items, add or
 
 - **React Query:** Data fetching and state management are efficiently handled by React Query, enhancing the performance and responsiveness of the application.
 
-- **Context API:** We use the Context API to manage user authentication and the shopping cart, providing a convenient and centralized way to share data and state between components.
-
-- **Custom Hooks:** Throughout the application, custom hooks have been developed to encapsulate and reuse functionality, promoting clean and maintainable code.
+- **Redux Toolkit:** Redux Toolkit is used to manage complex application state, providing a clean and efficient way to handle data and UI changes. It's particularly useful for managing user authentication, managing cart, and handling asynchronous actions.
 
 ## Approach - Solution
 
-Database Schema Design:
+#### Database Schema Design:
 
-Schema Definition: Began by carefully crafting the database schema to ensure it accommodates all critical data for BusyBuy.
-Structured Data: Designed collections to store user information, product details, shopping cart contents, and order history.
-Relational Design: Created relationships between collections to maintain data integrity.
-User Authentication Flow:
+- **Schema Definition:** Created a well-structured database schema to store crucial data, including user details, product information, shopping carts, and order history.
+- **Relational Design:** Established relationships between different data collections to maintain data integrity.
 
-Authentication Setup: Implemented user authentication using Firebase Authentication, ensuring robust security for user accounts.
-Registration and Login: Developed user registration and login pages, enabling users to create accounts and securely access the platform.
-Error Handling: Implemented error handling mechanisms to gracefully manage authentication-related issues.
+#### User Authentication Flow:
 
-User Data Storage:
+- **Authentication Setup:** Implemented secure user authentication using Firebase Authentication.
+- **Registration and Login:** Developed user registration and login pages for a smooth account creation and login process.
+- **Error Handling:** Implemented error-handling mechanisms to gracefully handle authentication-related issues.
 
-Firestore Integration: Utilized Firebase Firestore for storing user data.
-User Collection: Designed the user collection to include comprehensive user details, such as name and contact information.
-Shopping Cart: Implemented a cart reference within the user collection to store product IDs and quantities, facilitating personalized shopping experiences.
+#### User Data Storage:
 
-User Context Integration:
+- **Firestore Integration:** Leveraged Firebase Firestore for efficient storage of user data.
+- **User Collection:** Designed a user collection to store comprehensive user information, including names and contact details.
+- **Shopping Cart:** Integrated a cart reference within the user collection to manage product IDs and quantities for personalized shopping experiences.
 
-Global User Context: Established a global user context to provide consistent login status information throughout the application.
-Cross-Component Access: Ensured that user login status is easily accessible across various components, enhancing user experience and security.
+#### Redux Implementation:
 
-Product Page Development:
+- **authReducer:** Established a global login state through Redux, providing consistent login status information across the application.
+- **Cross-Component Access:** Ensured easy access to user login status across various components for improved user experience and security.
 
-User-Centric UI: Created an intuitive and visually appealing product page to showcase available items.
-Firestore Integration: Seamlessly integrated the product page with Firestore, dynamically populating product details.
-Admin Control: Implemented an admin control panel to manage product listings, ensuring efficient product management.
+#### Product Page Development:
 
-Routing and Navigation:
+- **User-Centric UI:** Designed an intuitive and visually appealing product page to showcase available items.
+- **Firestore Integration:** Seamlessly integrated the product page with Firestore, enabling dynamic product detail updates.
+- **Admin Control:** Implemented an admin control panel for efficient product management.
 
-Navigation Setup: Configured routing and navigation using React Router DOM for smooth transitions between app sections.
-Reusable Components: Developed a versatile card component for displaying product information, promoting code reusability and maintainability.
+#### Routing and Navigation:
 
-Cart Context Integration:
+- **Navigation Setup:** Configured routing and navigation using React Router DOM for smooth transitions between app sections.
+- **Reusable Components:** Developed versatile card components for displaying product information, promoting code reusability, and easier maintenance.
 
-Efficient Cart Management: Developed a cart context to streamline cart-related operations.
-Event Handling: Incorporated event handlers to manage user interactions with the cart.
-Data Synchronization: Fetched and synchronized cart data with the Firestore database, reflecting real-time changes.
+#### Cart Reducer:
 
-Order Processing:
+- **Efficient Cart Management:** Created a cart reducer to streamline cart-related operations.
+- **Event Handling:** Incorporated event handlers to manage user interactions with the cart.
+- **Data Synchronization:** Fetched and synchronized cart data with the Firestore database, reflecting real-time changes.
 
-Order Page Creation: Designed and implemented an order page to provide users with detailed order information.
-Firestore Order Storage: Stored order data in the Firestore order collection, maintaining user IDs and order history.
-Timestamps: Recorded timestamps for each order, facilitating tracking and historical reference.
+#### Order Processing:
+
+- **Order Page Creation:** Designed and implemented an order page to provide users with detailed order information.
+- **Firestore Order Storage:** Stored order data in the Firestore order collection, maintaining user IDs and order history.
+- **Timestamps:** Recorded timestamps for each order, facilitating tracking and historical reference.
