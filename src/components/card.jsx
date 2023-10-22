@@ -27,7 +27,11 @@ export default function Card({page = "default", product}) {
   return (
     <div className="flex flex-col justify-between">
       <div>
-        <img src={product?.image} alt="product" className="w-full h-80" />
+        <img
+          src={product?.image}
+          alt="product"
+          className="w-full h-80 object-cover object-top"
+        />
       </div>
       <div className="py-2 font-bold">{product?.name}</div>
       <div className="flex items-center justify-between">
